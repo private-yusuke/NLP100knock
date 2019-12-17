@@ -17,19 +17,45 @@ string UK() {
     return getJson().filter!(i => i["title"].str == "イギリス").array[0]["text"].str;
 }
 
-void main() {
-    string uk = UK();
-    auto reg1 = ctRegex!(r"^\{\{基礎情報.*?$(.*?)^\}\}$", "gms");
-    auto basicinfos = uk.matchAll(reg1).array[0][1];
-    auto removeSign = ctRegex!(r"('{2,5})(.+?)(\1)", "gms");
+string extractBasicInfo(string s) {
+    auto r = ctRegex!(r"^\{\{基礎情報.*?$(.*?)^\}\}$", "gms");
+    return s.matchAll(r).array[0][1];
+}
+
+string removeSign(string s) {
+    auto r = ctRegex!(r"('{2,5})(.+?)(\1)", "gms");
     string removeSignFun(Captures!string c) {
         return c[2];
     }
-    basicinfos = replaceAll!(removeSignFun)(basicinfos, removeSign);
-    auto reg2 = ctRegex!(r"\|(.+?) = (.+?)(?:(?=\n\|)|(?=\|$))", "gms");
+    return replaceAll!(removeSignFun)(s, r);
+}
+
+string removeInternalLink(string s) {
+    auto r = ctRegex!(r"\[\[(?!.+:|#)(.+?)\|*\]\]");
+    string removeInternalLinkFun(Captures!string c) {
+        return c[1];
+    }
+    return replaceAll!(removeInternalLinkFun)(s, r);
+}
+
+string[string] mapBasicInfo(string s) {
+    auto r = ctRegex!(r"\|(.+?) = (.+?)(?:(?=\n\|)|(?=\|$))", "gms");
     string[string] m;
-    foreach(v; basicinfos.matchAll(reg2)) {
+    foreach(v; s.matchAll(r)) {
         m[v[1]] = v[2];
     }
+    return m;
+}
+
+
+void main() {
+    string uk = UK();
+    auto basicinfo = extractBasicInfo(uk);
+    
+    basicinfo = removeSign(basicinfo);
+    basicinfo = removeInternalLink(basicinfo);
+
+    auto m = mapBasicInfo(basicinfo);
+
     m.each!((i, v) => writefln("%s: %s", i, v));
 }
