@@ -30,6 +30,14 @@ string removeSign(string s) {
     return replaceAll!(removeSignFun)(s, r);
 }
 
+string removeInternalLink(string s) {
+    auto r = ctRegex!(r"\[\[(?!.+:|#)(.+?)\|*\]\]");
+    string removeInternalLinkFun(Captures!string c) {
+        return c[1];
+    }
+    return replaceAll!(removeInternalLinkFun)(s, r);
+}
+
 string[string] mapBasicInfo(string s) {
     auto r = ctRegex!(r"\|(.+?) = (.+?)(?:(?=\n\|)|(?=\|$))", "gms");
     string[string] m;
@@ -45,6 +53,7 @@ void main() {
     auto basicinfo = extractBasicInfo(uk);
     
     basicinfo = removeSign(basicinfo);
+    basicinfo = removeInternalLink(basicinfo);
 
     auto m = mapBasicInfo(basicinfo);
 
