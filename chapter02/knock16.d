@@ -6,15 +6,16 @@ import std;
 // ......
 
 void main(string[] args) {
-    auto N = args[1].to!int;
-    auto content = readText("hightemp.txt").chomp.split('\n');
-    auto lineCount = content.length;
-    
-    auto k = (lineCount + N) / N;
-    foreach(i; 0..N) {
-        import std.file: write;
-        write(format("%d-%d.txt", N, i+1), content[i*k..min((i+1)*k, lineCount)].join('\n'));
-    }
+	auto N = args[1].to!int;
+	auto content = readText("hightemp.txt").chomp.split('\n');
+	auto lineCount = content.length;
 
-    // split -l 6 hightemp.txt test
+	auto k = (lineCount + N) / N;
+	foreach (i; 0 .. N) {
+		import std.file : write;
+
+		write(format("%d-%d.txt", N, i + 1), content[i * k .. min((i + 1) * k, lineCount)].join('\n'));
+	}
+
+	// split -l 6 hightemp.txt test
 }
