@@ -41,7 +41,7 @@ void main() {
 			counter[morpheme["surface"]] += 1;
 		}
 	}
-	foreach(p; zip(counter.keys, counter.values).sort!((a, b) => a[1] > b[1])) {
+	foreach (p; zip(counter.keys, counter.values).sort!((a, b) => a[1] > b[1])) {
 		writefln("%s: %d", p[0], p[1]);
 	}
 }

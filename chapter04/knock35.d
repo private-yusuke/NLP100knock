@@ -41,17 +41,19 @@ void main() {
 		ulong cnt = 0;
 
 		foreach (morpheme; line) {
-			if(morpheme["pos"] == "名詞") {
+			if (morpheme["pos"] == "名詞") {
 				tmp ~= morpheme["surface"];
 				cnt++;
 			} else {
-				if(cnt >= 2) res ~= tmp;
+				if (cnt >= 2)
+					res ~= tmp;
 				cnt = 0;
 				tmp = "";
 			}
 		}
 
-		if(cnt >= 2) res ~= tmp;
+		if (cnt >= 2)
+			res ~= tmp;
 	}
 	res.writeln;
 }
