@@ -41,10 +41,10 @@ void main() {
 			counter[morpheme["surface"]] += 1;
 		}
 	}
-	foreach (p; zip(counter.keys, counter.values).sort!((a, b) => a[1] > b[1]).take(10)) {
-		writefln("%s %d", p[0], p[1]);
+	foreach (p; zip(counter.keys, counter.values).sort!((a, b) => a[1] > b[1]).enumerate) {
+		writefln("%s %d", p[0]+1, p[1][1]);
 	}
 
-	// $ rdmd knock38.d > knock38_out.txt
-	// $ gnuplot knock38_plot.g
+	// $ rdmd knock39.d > knock39_out.txt
+	// $ gnuplot knock39_plot.g
 }
