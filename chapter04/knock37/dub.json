@@ -1,0 +1,12 @@
+{
+	"authors": [
+		"private_yusuke"
+	],
+	"copyright": "Copyright © 2019, private_yusuke",
+	"dependencies": {
+		"ggplotd": "~>1.2.0"
+	},
+	"description": "A minimal D application.",
+	"license": "MIT",
+	"name": "knock37"
+}

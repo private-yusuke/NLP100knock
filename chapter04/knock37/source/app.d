@@ -11,7 +11,7 @@ import std;
 string[string][][] readNeko() {
 	string[string][][] res;
 	string[string][] tmp;
-	foreach (line; File("neko.txt.mecab", "r").byLine) {
+	foreach (line; File("../neko.txt.mecab", "r").byLine) {
 		if (line == "EOS") {
 			if (tmp != null)
 				res ~= tmp;
@@ -33,6 +33,11 @@ string[string][][] readNeko() {
 	return res;
 }
 
+import core.thread;
+import ggplotd.ggplotd;
+import ggplotd.aes;
+import ggplotd.geom;
+
 void main() {
 	auto neko = readNeko();
 	ulong[string] counter;
@@ -41,7 +46,11 @@ void main() {
 			counter[morpheme["surface"]] += 1;
 		}
 	}
-	foreach (p; zip(counter.keys, counter.values).sort!((a, b) => a[1] > b[1])) {
-		writefln("%s %d", p[0], p[1]);
-	}
+	zip(counter.keys, counter.values)
+		.sort!((a, b) => a[1] > b[1])
+		.take(10)
+		.enumerate
+		.map!(a => aes!("x", "y", "label")(a[0], a[1][1], a[1][0]))
+		.geomHist2D
+		.putIn(GGPlotD()).save("knock37.png");
 }

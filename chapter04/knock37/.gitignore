@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/knock37
+knock37.so
+knock37.dylib
+knock37.dll
+knock37.a
+knock37.lib
+knock37-test-*
+*.exe
+*.o
+*.obj
+*.lst
