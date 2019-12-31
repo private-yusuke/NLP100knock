@@ -1,17 +1,17 @@
 import std;
 
 class Morph {
-    string surface, base, pos, pos1;
-    this(string surface, string base, string pos, string pos1) {
-        this.surface = surface;
-        this.base = base;
-        this.pos = pos;
-        this.pos1 = pos1;
-    }
-    override string toString() {
-        return format("surface: [%s], base: [%s], pos: [%s], pos1: [%s]",
-            this.surface, this.base, this.pos, this.pos1);
-    }
+	string surface, base, pos, pos1;
+	this(string surface, string base, string pos, string pos1) {
+		this.surface = surface;
+		this.base = base;
+		this.pos = pos;
+		this.pos1 = pos1;
+	}
+
+	override string toString() {
+		return format("surface: [%s], base: [%s], pos: [%s], pos1: [%s]", this.surface, this.base, this.pos, this.pos1);
+	}
 }
 // neko.txt.cabocha は、Homebrewでインストールしたときについてくる標準の辞書を利用しています。
 // neologdとかだと「我輩は猫である」が一つの名詞として解釈されてしまい、これは良いんですが、
@@ -26,12 +26,13 @@ Morph[][] readNeko() {
 	Morph[] tmp;
 	foreach (line; File("neko.txt.cabocha", "r").byLine) {
 		if (line == "EOS") {
-				res ~= tmp;
+			res ~= tmp;
 			tmp = null;
 			continue;
 		}
-        // 係り受け解析の結果はスキップします
-        if(line.startsWith('*')) continue;
+		// 係り受け解析の結果はスキップします
+		if (line.startsWith('*'))
+			continue;
 		auto cols = line.split('\t').to!(string[]);
 		if (cols.length < 2)
 			continue;
@@ -46,5 +47,5 @@ Morph[][] readNeko() {
 void main() {
 	readNeko()[2].each!writeln;
 
-    // MeCab用に書いたパーサー(knock30)が実質的にそのまま使い回せる！！
+	// MeCab用に書いたパーサー(knock30)が実質的にそのまま使い回せる！！
 }

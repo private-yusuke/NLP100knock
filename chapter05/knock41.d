@@ -1,17 +1,17 @@
 import std;
 
 class Morph {
-    string surface, base, pos, pos1;
-    this(string surface, string base, string pos, string pos1) {
-        this.surface = surface;
-        this.base = base;
-        this.pos = pos;
-        this.pos1 = pos1;
-    }
-    override string toString() {
-        return format("surface: [%s], base: [%s], pos: [%s], pos1: [%s]",
-            this.surface, this.base, this.pos, this.pos1);
-    }
+	string surface, base, pos, pos1;
+	this(string surface, string base, string pos, string pos1) {
+		this.surface = surface;
+		this.base = base;
+		this.pos = pos;
+		this.pos1 = pos1;
+	}
+
+	override string toString() {
+		return format("surface: [%s], base: [%s], pos: [%s], pos1: [%s]", this.surface, this.base, this.pos, this.pos1);
+	}
 }
 
 /*
@@ -20,14 +20,13 @@ class Morph {
  * 係り際文節インデックス番号(dst), 係り元文節インデックス番号のリスト(srcs)
 */
 class Chunk {
-    Morph[] morphs;
-    long dst;
-    long[] srcs;
+	Morph[] morphs;
+	long dst;
+	long[] srcs;
 
-    override string toString() {
-        return format("%s srcs[%(%d,%)] dst[%d]",
-            this.morphs.map!(i => i.surface).join.array, this.srcs, this.dst);
-    }
+	override string toString() {
+		return format("%s srcs[%(%d,%)] dst[%d]", this.morphs.map!(i => i.surface).join.array, this.srcs, this.dst);
+	}
 }
 
 // neko.txt.cabocha は、Homebrewでインストールしたときについてくる標準の辞書を利用しています。
@@ -41,37 +40,39 @@ class Chunk {
 Chunk[][] readNeko() {
 	Chunk[][] res; // key: idx
 	Morph[] morphs;
-    long index; // 現在の文節番号
-    Chunk[ulong] current;
+	long index; // 現在の文節番号
+	Chunk[ulong] current;
 	foreach (line; File("neko.txt.cabocha", "r").byLine) {
 		if (line == "EOS") {
-            res ~= current.keys.sort.map!(i => current[i]).array;
-            current = null;
-		} else if(line.startsWith('*')) {
-            auto cols = line.split(' ').to!(string[]);
-            index = cols[1].to!long;
-            if(!(index in current)) current[index] = new Chunk;
-            const auto dst = cols[2][0..$-1].to!long;
-            current[index].dst = dst;
-            if(dst != -1) {
-                if(!(dst in current)) current[dst] = new Chunk;
-                current[dst].srcs ~= index;
-            }
-        } else {
-            auto cols = line.split('\t').to!(string[]);
-            if (cols.length < 2)
-                continue;
-            auto rcol = cols[1].split(',').to!(string[]);
+			res ~= current.keys.sort.map!(i => current[i]).array;
+			current = null;
+		} else if (line.startsWith('*')) {
+			auto cols = line.split(' ').to!(string[]);
+			index = cols[1].to!long;
+			if (!(index in current))
+				current[index] = new Chunk;
+			const auto dst = cols[2][0 .. $ - 1].to!long;
+			current[index].dst = dst;
+			if (dst != -1) {
+				if (!(dst in current))
+					current[dst] = new Chunk;
+				current[dst].srcs ~= index;
+			}
+		} else {
+			auto cols = line.split('\t').to!(string[]);
+			if (cols.length < 2)
+				continue;
+			auto rcol = cols[1].split(',').to!(string[]);
 
-            auto morph = new Morph(cols[0], rcol[6], rcol[0], rcol[1]);
-            current[index].morphs ~= morph;
-        }
+			auto morph = new Morph(cols[0], rcol[6], rcol[0], rcol[1]);
+			current[index].morphs ~= morph;
+		}
 	}
-    return res;
+	return res;
 }
 
 void main() {
-    foreach(i, chunk; readNeko()[7]) {
-        writefln("[%d]%s", i, chunk);
-    }
+	foreach (i, chunk; readNeko()[7]) {
+		writefln("[%d]%s", i, chunk);
+	}
 }

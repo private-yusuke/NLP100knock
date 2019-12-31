@@ -42,7 +42,7 @@ void main() {
 		}
 	}
 	foreach (p; zip(counter.keys, counter.values).sort!((a, b) => a[1] > b[1]).enumerate) {
-		writefln("%s %d", p[0]+1, p[1][1]);
+		writefln("%s %d", p[0] + 1, p[1][1]);
 	}
 
 	// $ rdmd knock39.d > knock39_out.txt
