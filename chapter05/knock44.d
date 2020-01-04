@@ -85,7 +85,7 @@ void main() {
 
 	string res;
 	res ~= "digraph parsed {\n";
-	foreach (chunk; chunks[0]) {
+	foreach (index, chunk; chunks[0]) {
 		if (chunk.dst != -1) {
 			string src = chunk.surfacesToString();
 			string dst = chunks[0][chunk.dst].surfacesToString();
