@@ -89,7 +89,9 @@ void main() {
 		if (chunk.dst != -1) {
 			string src = chunk.surfacesToString();
 			string dst = chunks[0][chunk.dst].surfacesToString();
-			res ~= format("    %s -> %s;\n", src, dst);
+			res ~= format("    %s%d [label=\"%s\"];\n", src, index, src);
+			res ~= format("    %s%d [label=\"%s\"];\n", dst, chunk.dst, dst);
+			res ~= format("    %s%d -> %s%d;\n", src, index, dst, chunk.dst);
 		}
 	}
 	res ~= "}";
