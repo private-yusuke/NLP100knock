@@ -105,11 +105,4 @@ void main() {
 			}
 		}
 	}
-	/*
-	$ rdmd knock45.d > knock45_out.txt
-	$ sort knock45_out.txt | uniq --count | sort --numeric-sort --reverse
-	$ grep "^する\s" knock45_out.txt | sort | uniq -c | sort --numeric-sort --reverse > knock45_filter_する.txtort knock45_out.txt | uniq -c | sort --numeric-sort --reverse > knock45_filter_all.txt
-	$ grep "^見る\s" knock45_out.txt | sort | uniq -c | sort --numeric-sort --reverse > knock45_filter_見る.txt
-	$ grep "^与える\s" knock45_out.txt | sort | uniq -c | sort --numeric-sort --reverse > knock45_filter_与える.txt
-	*/
 }
