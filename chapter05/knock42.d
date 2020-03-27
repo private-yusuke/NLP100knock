@@ -1,5 +1,3 @@
-module chapter05.knock42;
-
 import std;
 
 class Morph {
